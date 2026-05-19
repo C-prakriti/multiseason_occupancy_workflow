@@ -17,15 +17,47 @@ R.
     -   TRI
 
 ## Repository Structure
+## Workflow Overview
+## Repository Workflow Structure
 
-├── data/ │ ├── raw/ │ └── processed/ │ ├── docs/ │ ├──
-01.encounter_history.md │ ├── 02.survey_cov.md │ ├── 03.forest_cover.md
-│ ├── 04.ndvi.md │ ├── 05.distance_to_settlement.md │ └── 06.tri │ ├──
-scripts/ │ ├── 001.extract_metadata.R │ ├── 002.data_parsing.R │ ├──
-003.assigning_siteID.R │ ├── 004.eh.R │ ├── 005.survey_cov.R │ └──
-006.gee_ndvi.js │ ├── qgis/ │ ├── occupancy_project.qgz/ │ ├──
-sample_sites.gpkg │ ├── siteID.gpkg │ └── study_area.gpkg │\
-├── styles/ │ ├── outputs/ │ └── README.md
+```mermaid
+flowchart TD
+
+A[README.md]
+
+A --> B[data]
+B --> B1[raw]
+B --> B2[processed]
+
+A --> C[docs]
+
+C --> C1[01_encounter_history.md]
+C --> C2[02_survey_cov.md]
+C --> C3[03_forest_cover.md]
+C --> C4[04_ndvi.md]
+C --> C5[05_distance_to_settlement.md]
+C --> C6[06_tri.md]
+
+A --> D[scripts]
+
+D --> D1[001_extract_metadata.R]
+D --> D2[002_data_parsing.R]
+D --> D3[003_assigning_siteID.R]
+D --> D4[004_eh.R]
+D --> D5[005_survey_cov.R]
+D --> D6[006_gee_ndvi.js]
+
+A --> E[qgis]
+
+E --> E1[occupancy_project.qgz]
+E --> E2[sample_sites.gpkg]
+E --> E3[siteID.gpkg]
+E --> E4[study_area.gpkg]
+
+A --> F[styles]
+
+A --> G[outputs]
+```
 
 ## Workflow Overview
 
