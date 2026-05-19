@@ -17,9 +17,6 @@ R.
     -   TRI
 
 ## Repository Structure
-## Workflow Overview
-## Repository Workflow Structure
-
 ```mermaid
 flowchart TD
 
@@ -32,20 +29,20 @@ B --> B2[processed]
 A --> C[docs]
 
 C --> C1[01_encounter_history.md]
-C --> C2[02_survey_cov.md]
-C --> C3[03_forest_cover.md]
-C --> C4[04_ndvi.md]
-C --> C5[05_distance_to_settlement.md]
-C --> C6[06_tri.md]
+C1 --> C2[02_survey_covariates.md]
+C2 --> C3[03_forest_cover.md]
+C3 --> C4[04_ndvi.md]
+C4 --> C5[05_distance_to_settlement.md]
+C5 --> C6[06_tri.md]
 
 A --> D[scripts]
 
 D --> D1[001_extract_metadata.R]
-D --> D2[002_data_parsing.R]
-D --> D3[003_assigning_siteID.R]
-D --> D4[004_eh.R]
-D --> D5[005_survey_cov.R]
-D --> D6[006_gee_ndvi.js]
+D1 --> D2[002_data_parsing.R]
+D2 --> D3[003_assign_siteID.R]
+D3 --> D4[004_encounter_history.R]
+D4 --> D5[005_survey_covariates.R]
+D5 --> D6[006_gee_ndvi.js]
 
 A --> E[qgis]
 
