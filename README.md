@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # Multiseason Occupancy Modeling Workflow for Wildlife Monitoring
 
 This repository documents a complete workflow for preparing detection
