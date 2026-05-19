@@ -1,0 +1,4 @@
+install.packages('RPresence', repo="https://eesc.usgs.gov/mbr/mbrCRAN")
+learnr::run_tutorial(name = "sitecovs", package = "occupancyTuts")
+
+paste0(find.package("occupancyTuts"), "E:/Learning Platform/R-Programming/OccupancyTuts/sitecovs.xlsx")
