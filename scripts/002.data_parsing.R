@@ -52,8 +52,8 @@ metadata <- metadata %>%
   rename(datetime = DateTimeOriginal)
 
 # Export the processed image_metadata_file
-write.csv(metadata, "D:/R_projects/multiseason_occupancy/data/processed/img_metadata.csv")
-write.csv(station, "D:/R_projects/multiseason_occupancy/data/processed/cam_station.csv")
+write.csv(metadata, "D:/R_projects/multiseason_occupancy/data/processed/img_metadata.csv", row.names = FALSE)
+write.csv(station, "D:/R_projects/multiseason_occupancy/data/processed/cam_station.csv", row.names = FALSE)
 
 
 
