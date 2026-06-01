@@ -70,7 +70,7 @@ A --> G[outputs]
 | Covariate           | Ecological Relevance      |
 |---------------------|---------------------------|
 | Forest cover        | Habitat availability      |
-| Forest loss         | Habitat disturbance      |
+| Forest loss         | Habitat disturbance       |
 | NDVI                | Proxy for prey base index |
 | Settlement distance | Human disturbance         |
 | TRI                 | Habitat suitability       |
@@ -86,18 +86,12 @@ A --> G[outputs]
 
 ## Documentation
 
--   [Encounter history matrix
-    preparation](D:/R_projects/multiseason_occupancy/docs/01.encounter_history.md)
--   [Survey
-    covariates](D:/R_projects/multiseason_occupancy/docs/02.survey_cov.md)
--   [Forest
-    covariates](D:/R_projects/multiseason_occupancy/docs/03.forest_cover.md)
--   [NDVI
-    covariates](D:/R_projects/multiseason_occupancy/docs/04.ndvi.md)
--   [Distance to
-    settlement](D:/R_projects/multiseason_occupancy/docs/05.distance_to_settlement.md)
--   [Terrain ruggedness
-    index](D:/R_projects/multiseason_occupancy/docs/06.tri.md)
+-   [Encounter history matrix preparation](docs/01.encounter_history.md)
+-   [Survey covariates](docs/02.survey_cov.md)
+-   [Forest covariates](docs/03.forest_cover.md)
+-   [NDVI covariates](docs/04.ndvi.md)
+-   [Distance to settlement](docs/05.distance_to_settlement.md)
+-   [Terrain ruggedness index](docs/06.tri.md)
 
 ## Outputs
 
