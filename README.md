@@ -70,7 +70,7 @@ A --> G[outputs]
 | Covariate           | Ecological Relevance      |
 |---------------------|---------------------------|
 | Forest cover        | Habitat availability      |
-| Forest loss         | Habiatat disturbance      |
+| Forest loss         | Habitat disturbance      |
 | NDVI                | Proxy for prey base index |
 | Settlement distance | Human disturbance         |
 | TRI                 | Habitat suitability       |
@@ -108,7 +108,6 @@ A --> G[outputs]
 -   NDVI covariae
 -   Distance to settlement covariate
 -   Terrain ruggedness index covariate
--   Raste outputs
 -   Maps of different site covariates
 
 ## Future additions
