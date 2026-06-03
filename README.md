@@ -1,9 +1,6 @@
 # Multiseason Occupancy Modeling Workflow for Wildlife Monitoring
 
-This repository documents a complete workflow for preparing detection
-histories, survey covariates ad spatial site covariates for multiseason
-occupancy anlaysis using camera trap data, QGIS, Goolge Earth Engine and
-R.
+This repository documents a complete workflow for preparing detection histories, survey covariates ad spatial site covariates for multiseason occupancy anlaysis using camera trap data, QGIS, Goolge Earth Engine and R.
 
 ## Objectives:
 
@@ -17,7 +14,8 @@ R.
     -   TRI
 
 ## Repository Structure
-```mermaid
+
+``` mermaid
 flowchart TD
 
 A[README.md]
@@ -43,6 +41,7 @@ D2 --> D3[003_assign_siteID.R]
 D3 --> D4[004_encounter_history.R]
 D4 --> D5[005_survey_covariates.R]
 D5 --> D6[006_gee_ndvi.js]
+D6 --> D7[00_datacleaning_umfobject.R]
 
 A --> E[qgis]
 
@@ -63,7 +62,7 @@ A --> G[outputs]
 -   Create observation covariates
 -   Prepare spatial covariates in QGIS and Google Earth Engine
 -   Extract stie-level covariates
--   Organize outputs for occupancy modeling
+-   Organize outputs and create unmarkedMultFrame object for occupancy modeling
 
 ## Site covariates
 
@@ -86,18 +85,12 @@ A --> G[outputs]
 
 ## Documentation
 
--   [Encounter history matrix
-    preparation](D:/R_projects/multiseason_occupancy/docs/01.encounter_history.md)
--   [Survey
-    covariates](D:/R_projects/multiseason_occupancy/docs/02.survey_cov.md)
--   [Forest
-    covariates](D:/R_projects/multiseason_occupancy/docs/03.forest_cover.md)
--   [NDVI
-    covariates](D:/R_projects/multiseason_occupancy/docs/04.ndvi.md)
--   [Distance to
-    settlement](D:/R_projects/multiseason_occupancy/docs/05.distance_to_settlement.md)
--   [Terrain ruggedness
-    index](D:/R_projects/multiseason_occupancy/docs/06.tri.md)
+-   [Encounter history matrix preparation](D:/R_projects/multiseason_occupancy/docs/01.encounter_history.md)
+-   [Survey covariates](D:/R_projects/multiseason_occupancy/docs/02.survey_cov.md)
+-   [Forest covariates](D:/R_projects/multiseason_occupancy/docs/03.forest_cover.md)
+-   [NDVI covariates](D:/R_projects/multiseason_occupancy/docs/04.ndvi.md)
+-   [Distance to settlement](D:/R_projects/multiseason_occupancy/docs/05.distance_to_settlement.md)
+-   [Terrain ruggedness index](D:/R_projects/multiseason_occupancy/docs/06.tri.md)
 
 ## Outputs
 
@@ -110,10 +103,12 @@ A --> G[outputs]
 -   Terrain ruggedness index covariate
 -   Raste outputs
 -   Maps of different site covariates
+-   dynamic covariates
+-   Scaled covariates
+-   umf object.rds
 
 ## Future additions
 
--   Correlation analysis
 -   Model fitting in R
 -   Detection probability analysis
 -   Model selection Workflow
