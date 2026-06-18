@@ -1,6 +1,6 @@
 # Multiseason Occupancy Modeling Workflow for Wildlife Monitoring
 
-This repository documents a complete workflow for preparing detection histories, survey covariates ad spatial site covariates for multiseason occupancy anlaysis using camera trap data, QGIS, Goolge Earth Engine and R.
+This repository documents a complete workflow for preparing detection histories, survey covariates, spatial site covariates and model building for multiseason occupancy anlaysis using camera trap data, QGIS, Goolge Earth Engine and R.
 
 ## Objectives:
 
@@ -12,6 +12,7 @@ This repository documents a complete workflow for preparing detection histories,
     -   NDVI
     -   Distance to settlement
     -   TRI
+- Build candidate models and validate them using unmarked package in R
 
 ## Repository Structure
 
@@ -32,6 +33,8 @@ C2 --> C3[03_forest_cover.md]
 C3 --> C4[04_ndvi.md]
 C4 --> C5[05_distance_to_settlement.md]
 C5 --> C6[06_tri.md]
+C6 --> C7[07_umf_object.md]
+C7 --> C8[08_model_selection.md]
 
 A --> D[scripts]
 
@@ -41,7 +44,8 @@ D2 --> D3[003_assign_siteID.R]
 D3 --> D4[004_encounter_history.R]
 D4 --> D5[005_survey_covariates.R]
 D5 --> D6[006_gee_ndvi.js]
-D6 --> D7[00_datacleaning_umfobject.R]
+D6 --> D7[007_datacleaning_umfobject.R]
+D7 --> D8[008_model_selection.R]
 
 A --> E[qgis]
 
@@ -63,6 +67,11 @@ A --> G[outputs]
 -   Prepare spatial covariates in QGIS and Google Earth Engine
 -   Extract stie-level covariates
 -   Organize outputs and create unmarkedMultFrame object for occupancy modeling
+-   Build candidate models for detection, occupancy, colonization and Extinction using AICc
+-   Select the best models for each parameter
+-   Check the fitness of the model using Goodness of Fit
+-   In case of moderate over dispersion, use QAICc to identify the best model for each parameters
+-   Estimate final prediction probability
 
 ## Site covariates
 
@@ -91,6 +100,9 @@ A --> G[outputs]
 -   [NDVI covariates](docs/04.ndvi.md)
 -   [Distance to settlement](docs/05.distance_to_settlement.md)
 -   [Terrain ruggedness index](docs/06.tri.md)
+-   [Umf Object Creation](docs/07.umf_object.md)
+-   [Model Selection](docs/08.model_selection.md)
+
 >>>>>>> 35110e85ce9feb0853a6309621e546926c2a5a5d
 
 ## Outputs
@@ -109,7 +121,6 @@ A --> G[outputs]
 
 ## Future additions
 
--   Model fitting in R
--   Detection probability analysis
--   Model selection Workflow
--   Habitat suitability visualization
+-  Estimate occupancy dynamics through time
+-  Create final Parameter table
+-  Visualize the model relationships

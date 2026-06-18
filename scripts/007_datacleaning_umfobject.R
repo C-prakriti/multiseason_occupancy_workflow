@@ -18,14 +18,6 @@ tri <- read.csv("output/tri_cov.csv")           #static site cov
 eff <- read.csv("output/effort_matrix.csv")     #observation cov
 year <- read.csv("output/year_matrix.csv")      #observation cov
 
-eh <- read.csv("encounter_history.csv")   #encounter history matrix
-dist_set <- read.csv("dist_settlement_cov.csv")   #dynamic site cov
-fcover <- read.csv("forestcover_loss.csv")   #dynamic site cov
-ndvi <- read.csv("ndvi_cov.csv")     #dynamic site cov
-tri <- read.csv("tri_cov.csv")           #static site cov
-eff <- read.csv("effort_matrix.csv")     #observation cov
-year <- read.csv("year_matrix.csv")      #observation cov
-
 #------------------------------------------------------------------------------------------------------------------
 # 1. Combine all dynamic covariates into a single dyn_cov
 #---------------------------------------------------------------------------------------------------------------
@@ -77,7 +69,7 @@ dyn_cov <- fcover_clean %>%
 
 dyn_cov <- dyn_cov %>%
   left_join(dist_set_clean,
-            by = "siteID")
+            by = "siteID")Con
 
 # 1.5 Check for any missing values
 colSums(is.na(dyn_cov))
@@ -465,7 +457,7 @@ umf <- unmarkedMultFrame(
   numPrimary = 3
 )
 #----------------------------------------------------------------------------------------------------------------------------
-# 6. Quick checks
+# 8. Quick checks
 #---------------------------------------------------------------------------------------------------------------------------
 umf
 class(umf)
@@ -478,6 +470,6 @@ sum(is.na(getY(umf)))
 packageVersion("unmarked")
 
 #------------------------------------------------------------------------------------------------------------------------------
-# 7. Save the umf data as a R object
+# 9. Save the umf data as a R object
 #-----------------------------------------------------------------------------------------------------------------------------
 saveRDS(umf, "D:/R_projects/multiseason_occupancy/output/umf_object.rds")

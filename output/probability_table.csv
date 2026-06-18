@@ -1,0 +1,5 @@
+"","parameter","mean","lower_CI","upper_CI"
+"1","Occupancy",0.625972413855479,NA,NA
+"2","Colonization",0.994849598947952,NA,NA
+"3","Extinction",0.0151515571070572,NA,NA
+"4","Detection",0.129307819399672,0.103550540632862,0.160272631351575
