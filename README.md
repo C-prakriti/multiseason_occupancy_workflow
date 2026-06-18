@@ -103,8 +103,6 @@ A --> G[outputs]
 -   [Umf Object Creation](docs/07.umf_object.md)
 -   [Model Selection](docs/08.model_selection.md)
 
->>>>>>> 35110e85ce9feb0853a6309621e546926c2a5a5d
-
 ## Outputs
 
 -   Encounter history matrix
