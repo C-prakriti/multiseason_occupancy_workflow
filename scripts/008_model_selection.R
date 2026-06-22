@@ -2,17 +2,29 @@
 #Project: Multi-season occupancy analysis
 #Purpose: To build candidate models and select the best fitted model for occupancy analysis
 #------------------------------------------------------------------------------------------------
-
 install.packages("MuMIn")
 # Load necessary packages
 library(unmarked)
 library(AICcmodavg)
-library(MuMIn)
 library(ggplot2)
 
 # Load necessary files
 umf <- readRDS("D:/R_projects/multiseason_occupancy/output/umf_object.rds")
 dyn_cov <- read.csv("D:/R_projects/multiseason_occupancy/output/dynamic_covariates.csv")
+
+#-----------------------------------------------------------------------------------------------------------------
+# 0. Pre-modeling checks
+#-------------------------------------------------------------------------------------------------------------------------
+# Check for mising values
+sum(is.na(siteCovs(umf)))
+sum(is.na(yearlySiteCovs(umf)))
+
+# Create convergence check helper function
+check_model <- function(model, model_name){
+  if(model@opt$convergence != 0){
+    warning(paste(model_name, "Failed to converge"))
+  }
+}
 
 #----------------------------------------------------------------------------------------------------------------------
 # 1. Fit null model
@@ -40,6 +52,7 @@ det_eff <- colext(
   pformula = ~effort,
   data = umf
 )
+check_model(det_eff, "det_eff")
 
 # 2.1.2 Year only model
 det_year <- colext(
@@ -49,6 +62,7 @@ det_year <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(det_year, "det_year")
 
 # 2.1.3 Effort + Year
 det_eff_year <- colext(
@@ -58,6 +72,7 @@ det_eff_year <- colext(
   pformula = ~effort + year,
   data = umf
 )
+check_model(det_eff_year, "det_eff_year")
 
 # 2.2 Select the best model
 # 2.2.1 Compare the models
@@ -68,11 +83,21 @@ det_mod <- fitList(
   effort_year = det_eff_year
 )
 
-# 2.2.2 Select the model
-modSel(det_mod)
+# 2.2.2 Select the supported model
+det_modsel <- modSel(det_mod)
+det_table <- det_modsel@Full
+
+supported_det <- subset(
+  det_table,
+  delta <= 2
+)
+supported_det
+
+write.csv(det_table, "output/detection_model.csv")
 
 # Considering Year is our best model for detection
 best_det_mod <- det_year
+
 #-------------------------------------------------------------------------------------------------------------
 # 3. Occupancy Model Selection
 #-------------------------------------------------------------------------------------------------------------
@@ -94,6 +119,7 @@ occ_tri <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(occ_tri, "occ_tri")
 
 # 3.2 Select the best model
 # 3.2.1 Fit the model
@@ -103,7 +129,16 @@ occ_mod <- fitList(
 )
 
 # 3.2.2 Select the best model
-modSel(occ_mod)
+occ_modsel <- modSel(occ_mod)
+occ_table <- occ_modsel@Full
+
+supported_occ <- subset(
+  occ_table,
+  delta <= 2
+)
+supported_occ
+
+write.csv(occ_table, "Output/occupancy_models.csv")
 
 # Assuming that occ_tri is our best occupancy model
 best_occ_mod <- occ_tri
@@ -129,6 +164,7 @@ col_cover <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_cover, "col_cover")
 
 col_loss <- colext(
   psiformula = ~tri_z,
@@ -137,6 +173,7 @@ col_loss <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_loss, "col_loss")
 
 col_ndvi <- colext(
   psiformula = ~tri_z,
@@ -145,6 +182,7 @@ col_ndvi <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_ndvi, "col_ndvi")
 
 col_set <- colext(
   psiformula = ~tri_z,
@@ -153,6 +191,7 @@ col_set <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_set, "col_set")
 
 # 4.1.3 Double additive models
 col_set_cover <- colext(
@@ -162,6 +201,7 @@ col_set_cover <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_set_cover, "col_set_cover")
 
 col_cover_loss <- colext(
   psiformula = ~tri_z,
@@ -170,6 +210,7 @@ col_cover_loss <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_cover_loss, "col_cover_loss")
 
 col_loss_ndvi <- colext(
   psiformula = ~tri_z,
@@ -178,6 +219,7 @@ col_loss_ndvi <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_loss_ndvi, "col_loss_ndvi")
 
 col_ndvi_set <- colext(
   psiformula = ~tri_z,
@@ -186,6 +228,7 @@ col_ndvi_set <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_ndvi_set, "col_ndvi_set")
 
 col_set_loss <- colext(
   psiformula = ~tri_z,
@@ -194,6 +237,7 @@ col_set_loss <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_set_loss, "col_set_loss")
 
 # 4.1.4 Multiple additive models
 col_set_cover_loss <- colext(
@@ -203,6 +247,7 @@ col_set_cover_loss <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_set_cover_loss, "col_set_cover_loss")
 
 col_set_loss_ndvi <- colext(
   psiformula = ~tri_z,
@@ -211,6 +256,7 @@ col_set_loss_ndvi <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(col_set_loss_ndvi, "col_set_loss_ndvi")
 
 # Since our forest cover and ndvi were highly correlated they were not kept in the same model.
 
@@ -232,7 +278,14 @@ col_mod <- fitList(
 )
 
 # 4.2.2 Select the best model
-modSel(col_mod)
+col_modsel <- modSel(col_mod)
+col_table <- col_modsel@Full
+
+supported_col <- subset(
+  col_table,
+  delta <= 2
+)
+supported_col
 
 # Assuming that col_loss_ndvi is the best supported models among them
 #-----------------------------------------------------------------------------------------------------------------
@@ -256,7 +309,7 @@ ext_cover <- colext(
   pformula = ~year,
   data = umf
 )
-
+check_model(ext_cover, "ext_cover")
 
 ext_loss <- colext(
   psiformula = ~tri_z,
@@ -265,7 +318,7 @@ ext_loss <- colext(
   pformula = ~year,
   data = umf
 )
-
+check_model(ext_loss, "ext_loss")
 
 ext_ndvi <- colext(
   psiformula = ~tri_z,
@@ -274,7 +327,7 @@ ext_ndvi <- colext(
   pformula = ~year,
   data = umf
 )
-
+check_model(ext_ndvi, "ext_ndvi")
 
 ext_set <- colext(
   psiformula = ~tri_z,
@@ -283,7 +336,7 @@ ext_set <- colext(
   pformula = ~year,
   data = umf
 )
-
+check_model(ext_set, "ext_set")
 
 # 4.1.3 Double additive models
 ext_set_cover <- colext(
@@ -293,7 +346,7 @@ ext_set_cover <- colext(
   pformula = ~year,
   data = umf
 )
-
+check_model(ext_set_cover, "ext_set_cover")
 
 ext_cover_loss <- colext(
   psiformula = ~tri_z,
@@ -302,7 +355,7 @@ ext_cover_loss <- colext(
   pformula = ~year,
   data = umf
 )
-
+check_model(ext_cover_loss, "ext_cover_loss")
 
 ext_loss_ndvi <- colext(
   psiformula = ~tri_z,
@@ -311,6 +364,7 @@ ext_loss_ndvi <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(ext_loss_ndvi, "ext_loss_ndvi")
 
 ext_ndvi_set <- colext(
   psiformula = ~tri_z,
@@ -319,6 +373,7 @@ ext_ndvi_set <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(ext_ndvi_set, "ext_ndvi_set")
 
 ext_set_loss <- colext(
   psiformula = ~tri_z,
@@ -327,6 +382,7 @@ ext_set_loss <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(ext_set_loss, "ext_set_loss")
 
 # 4.1.4 Multiple additive models
 ext_set_cover_loss <- colext(
@@ -336,6 +392,7 @@ ext_set_cover_loss <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(ext_set_cover_loss, "ext_set_cover_loss")
 
 ext_set_loss_ndvi <- colext(
   psiformula = ~tri_z,
@@ -344,6 +401,7 @@ ext_set_loss_ndvi <- colext(
   pformula = ~year,
   data = umf
 )
+check_model(ext_set_loss_ndvi, "ext_set_loss_ndvi")
 
 # Since our forest cover and ndvi were highly correlated they were not kept in the same model.
 
@@ -365,7 +423,14 @@ ext_mod <- fitList(
 )
 
 # 4.2.2 Select the best model
-modSel(ext_mod)
+ext_modsel <- modSel(ext_mod)
+ext_table <- ext_modsel@Full
+
+supported_ext <- subset(
+  ext_table,
+  delta <= 2
+)
+supported_ext
 
 # Assuming that ext_set is the best candidate model 
 
@@ -394,19 +459,25 @@ gof <- mb.gof.test(
 
 gof
 
+gof_results <- data.frame(
+  chi_square = gof$chi.square,
+  p_value = gof$p.value,
+  c_hat = gof$c.hat.est,
+  nsim = 1000
+)
+
+write.csv(
+  gof_results,
+  "output/gof_results.csv",
+  row.names = FALSE
+)
+
 # In our demo data, bootstrap goodness-of-fit test indicated acceptable model fit (p = 0.18) and only weak overdispersion (c-hat = 1.24), so we will be proceeding using AICc.
 
 # 6.2 Check the models for model selection uncertainty
-det_modsel <- modSel(det_mod)
 det_modsel
-
-occ_modsel <- modSel(occ_mod)
 occ_modsel
-
-col_modsel <- modSel(col_mod)
 col_modsel
-
-ext_modsel <- modSel(ext_mod)
 ext_modsel
 
 # Since Colonization and Extinction models have multiple supported models, we will perform model averaged prediction on the colonization parameter
@@ -414,6 +485,18 @@ ext_modsel
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 # 7. Model averaged Predictions
 #--------------------------------------------------------------------------------------------------------------------------------
+# Model averaging decision logic
+n_occ <- nrow(supported_occ)
+n_col <- nrow(supported_col)
+n_ext <- nrow(supported_ext)
+n_det <- nrow(supported_det)
+
+if(all(c(n_occ, n_col, n_ext, n_det) == 1)){
+  message("Single best model adequate")
+} else {
+  message("Model averaging required")
+}
+
 # 7.1 For Colonization Model
 # 7.1.1 Define supported model set i.e. delta AIC < 2
 colmodel <- list(
@@ -489,7 +572,6 @@ dim(pred_mat)
 
 # 7.1.7 Compute model averaged prediction
 col_avg_pred <- as.vector(pred_mat%*%weights)
-avg_pred
 
 # 7.1.8 Compute unconditional variance
 se_mat <- sapply(
@@ -574,22 +656,6 @@ ggplot(
 # 7.2 For extinction model:
 #If Extinction model also shows multiple supported models and one covariate consistently appears among them, model averaged predictions can be produced using the code above
 # If the null model is the top-ranked model and covariate effects are weak, model averaged coefficients can be examined instead of generating prediction curves
-# 7.2.1 List the best supported models
-ext_modsel
-
-ext_models <- list(
-  ext_null,
-  ext_set,
-  ext_cover
-)
-
-# 7.2.2 Calculate the average of the model
-ext_avg <- model.avg(ext_models)
-
-
-# Model averaging was attempted but supported models exhibited singular Hessian matrices, preventing reliable calculation of model-averaged coefficients. 
-#Therefore, extinction inference was based on model-selection results i.e. null model.
-best_ext_mod <- ext_null
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 8. Prediction Probability
@@ -684,7 +750,10 @@ all_predictions
 
 write.csv(all_predictions, "D:/R_projects/multiseason_occupancy/output/all_predictions.csv", row.names = FALSE)
 
-
+#-----------------------------------------------------------------------------------------------------------------------
+sessionInfo()
+capture.output(sessionInfo(),
+               file = "output/session.txt")
 
 
 
