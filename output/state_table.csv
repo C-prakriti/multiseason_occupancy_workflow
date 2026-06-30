@@ -1,0 +1,5 @@
+"Parameter","Estimate","SE"
+"Occupancy (ψ)",0.5457,0.0033
+"Colonization (γ)",0.9638,0.0234
+"Extinction (ε)",0.0208,0.0092
+"Detection (p)",0.1293,0.0144
