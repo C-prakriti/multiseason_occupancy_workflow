@@ -14,7 +14,7 @@ head(metadata)
 str(metadata)
 
 #------------------------------------------------------------------------------------------------------------------------
-# Objective 1: Extract siteID from the FileName column such that filename is in format:C1001_2017-01-01_16_44_32-CAM60495.jpg
+# Objective 1: Extract gridID from the FileName column such that filename is in format:C1001_2017-01-01_16_44_32-CAM60495.jpg
 #------------------------------------------------------------------------------------------------------------------------
 str(metadata$FileName)
 
