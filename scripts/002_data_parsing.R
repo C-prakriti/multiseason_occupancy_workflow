@@ -6,7 +6,6 @@
 # Load required packages
 library(tidyverse)
 library(lubridate)
-library(dplyr)
 
 # Read the metadata csv
 metadata <- read.csv("D:/R_projects/multiseason_occupancy/data/raw/img_metadata_raw.csv")
