@@ -84,7 +84,7 @@ det_fits <- fitList(
 )
 
 # 2.2.2 Select the supported model
-det_aic <- modSel(det_mod)
+det_aic <- modSel(det_fits)
 det_aic
 det_table <- det_aic@Full
 
