@@ -2,7 +2,6 @@
 #Project: Multi-season occupancy analysis
 #Purpose: To build candidate models and select the best fitted model for occupancy analysis
 #------------------------------------------------------------------------------------------------
-install.packages("MuMIn")
 # Load necessary packages
 library(unmarked)
 library(AICcmodavg)
@@ -272,7 +271,7 @@ gof_results
 
 write.csv(gof_results,"D:/R_projects/multiseason_occupancy/output/gof_results",row.names = FALSE)
 
-# In our demo data, bootstrap goodness-of-fit test indicated acceptable model fit (p = 0.397) and only weak overdispersion (c-hat = 1.0112), so we will be proceeding using AICc.
+# In our demo data, bootstrap goodness-of-fit test indicated weak model fit (p = 0.397) and only weak overdispersion (c-hat = 1.0112), so we will be proceeding using QAICc.
 
 # Since Colonization and Extinction models have multiple supported models, we will perform model averaged prediction on the colonization parameter
 
@@ -560,11 +559,9 @@ ggsave(
 # 11. Present all results into state parameter table
 #-------------------------------------------------------------------------------------
 # Model-averaged site-level predictions
-occ_site_mat <- do.call(cbind, lapply(occ_avg_mods,
-                                      function(m) predict(m, type = "psi")$Predicted))
-psi_site  <- as.vector(occ_site_mat %*% occ_avg_wt)
-psi_hat   <- mean(psi_site, na.rm = TRUE)
-psi_se    <- sd(psi_site,   na.rm = TRUE)
+occ_pred_raw <- predict(best_occ_mod, type = "occ")
+psi_hat <- mean(occ_pred_raw$Predicted, na.rm = TRUE)
+psi_se <- mean(occ_pred_raw$SE, na.rm = TRUE)
 
 col_site_mat <- do.call(cbind, lapply(col_avg_mods,
                                       function(m) predict(m, type = "col")$Predicted))
